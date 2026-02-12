@@ -3,16 +3,22 @@ import mongoose from "mongoose";
 const ainesosaSchema = new mongoose.Schema(
   {
     nimi: { type: String, required: true, trim: true },
-    maara: { type: String, trim: true },  // esim. "2", "1/2"
-    yksikko: { type: String, trim: true } // esim. "kpl", "dl", "g"
+    maara: { type: String, trim: true }, // esim. "2", "1/2"
+    yksikko: { type: String, trim: true }, // esim. "kpl", "dl", "g"
   },
   { _id: false }
 );
 
 const kommenttiSchema = new mongoose.Schema(
   {
-    teksti: { type: String, required: true, trim: true, minlength: 1, maxlength: 2000 },
-    luotu: { type: Date, default: Date.now }
+    teksti: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+      maxlength: 2000,
+    },
+    luotu: { type: Date, default: Date.now },
   },
   { _id: false }
 );
@@ -20,7 +26,7 @@ const kommenttiSchema = new mongoose.Schema(
 const arvioSchema = new mongoose.Schema(
   {
     arvo: { type: Number, required: true, min: 1, max: 5 },
-    luotu: { type: Date, default: Date.now }
+    luotu: { type: Date, default: Date.now },
   },
   { _id: false }
 );
@@ -42,7 +48,7 @@ const reseptiSchema = new mongoose.Schema(
 
     arviot: { type: [arvioSchema], default: [] },
     arvioKeskiarvo: { type: Number, default: 0, min: 0, max: 5 },
-    arvioMaara: { type: Number, default: 0, min: 0 }
+    arvioMaara: { type: Number, default: 0, min: 0 },
   },
   { timestamps: { createdAt: "luotu", updatedAt: "paivitetty" } }
 );
@@ -77,6 +83,5 @@ reseptiSchema.pre("validate", async function () {
     .map((a) => norm(a.nimi))
     .filter(Boolean);
 });
-
 
 export default mongoose.model("Resepti", reseptiSchema);

@@ -1,0 +1,27 @@
+{
+  "name": "reseptienjakosovellus",
+  "version": "1.0.0",
+  "description": "Reseptien jakosovellus (root scripts for frontend + backend).",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"green,cyan\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anssi22/Reseptienjakosovellus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Anssi22/Reseptienjakosovellus/issues"
+  },
+  "homepage": "https://github.com/Anssi22/Reseptienjakosovellus#readme",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "^3.8.1",
+    "prettier-plugin-svelte": "^3.4.1"
+  }
+}

@@ -11,7 +11,8 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
@@ -20,7 +21,6 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log("Error connecting to MongoDB:", error);
     process.exit(1);
   });
-
 
 // --- Apufunktio: query -> lista ainesosia (normalisoituna) ---
 const norm = (s) =>
@@ -39,10 +39,7 @@ const parseAinesosatQuery = (q) => {
 
   if (Array.isArray(raw)) return raw.map(norm).filter(Boolean);
 
-  return String(raw)
-    .split(",")
-    .map(norm)
-    .filter(Boolean);
+  return String(raw).split(",").map(norm).filter(Boolean);
 };
 
 // --- ROUTET ---
@@ -55,9 +52,7 @@ app.get("/api/recipes", async (req, res, next) => {
     const ainesosat = parseAinesosatQuery(req.query);
 
     const filter =
-      ainesosat.length > 0
-        ? { ainesosatNorm: { $all: ainesosat } }
-        : {};
+      ainesosat.length > 0 ? { ainesosatNorm: { $all: ainesosat } } : {};
 
     const recipes = await Resepti.find(filter).sort({ luotu: -1 });
     res.json(recipes);
@@ -163,13 +158,12 @@ app.post("/api/recipes/:id/ratings", async (req, res, next) => {
         ? 0
         : recipe.arviot.reduce((sum, a) => sum + a.arvo, 0) / recipe.arvioMaara;
 
-    const saved = await recipe.save(); // save() -> validate hookit 
+    const saved = await recipe.save(); // save() -> validate hookit
     res.status(201).json(saved);
   } catch (err) {
     next(err);
   }
 });
-
 
 // --- Virheenkäsittely (Express error handler) ---
 app.use((err, req, res, next) => {
@@ -177,7 +171,9 @@ app.use((err, req, res, next) => {
 
   // Mongoose validointivirheet (esim. required/min/max)
   if (err.name === "ValidationError") {
-    return res.status(400).json({ error: "Validointivirhe", details: err.message });
+    return res
+      .status(400)
+      .json({ error: "Validointivirhe", details: err.message });
   }
 
   // Virheellinen ObjectId tms.

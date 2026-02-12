@@ -2,7 +2,7 @@
 määritellään Svelte-komponentissa script-blokissa, ja niitä käytetään sitten markupissa aaltosulkeilla {}. -->
 
 <script>
-	import "../app.css";
+  import "../app.css";
 
   const title = "Reseptien jakosivusto";
 </script>
@@ -36,12 +36,17 @@ Slotit ovat mekanismi, jolla parent-komponentti (tässä +layout.svelte) näytt�
     max-width: 900px;
     margin: 0 auto;
     padding: 16px;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family:
+      system-ui,
+      -apple-system,
+      Segoe UI,
+      Roboto,
+      Arial,
+      sans-serif;
   }
   .brand {
     font-weight: 900;
     text-decoration: none;
     color: inherit;
   }
-
 </style>
