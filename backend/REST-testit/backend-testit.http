@@ -1,0 +1,89 @@
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+###
+# 1) Health check (jos et ole tehnyt, ohita)
+GET {{baseUrl}}/
+Accept: application/json
+
+###
+# 2) Hae kaikki reseptit
+GET {{baseUrl}}/api/recipes
+Accept: application/json
+
+###
+# 3) Lisää resepti (POST)
+# HUOM: ainesosatNorm syntyy automaattisesti sun schema-hookissa
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+Accept: application/json
+
+{
+  "otsikko": "Kana-kastike",
+  "kuvaus": "Nopea arkiruoka",
+  "ainesosat": [
+    { "nimi": "Kana", "maara": "400", "yksikko": "g" },
+    { "nimi": "Sipuli", "maara": "1", "yksikko": "kpl" },
+    { "nimi": "Kerma", "maara": "2", "yksikko": "dl" }
+  ],
+  "ohjeet": "Pilko sipuli. Paista kana. Lisää sipuli ja kerma. Hauduta 10 min."
+}
+
+###
+# 4) Lisää toinen resepti (testaa hakua)
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+Accept: application/json
+
+{
+  "otsikko": "Tomaattipasta",
+  "kuvaus": "Kasvisvaihtoehto",
+  "ainesosat": [
+    { "nimi": "Pasta", "maara": "300", "yksikko": "g" },
+    { "nimi": "Tomaatti", "maara": "400", "yksikko": "g" },
+    { "nimi": "Sipuli", "maara": "1", "yksikko": "kpl" }
+  ],
+  "ohjeet": "Keitä pasta. Kuullota sipuli. Lisää tomaatti. Yhdistä."
+}
+
+###
+# 5) Haku ainesosilla (AND: pitää löytyä kaikki)
+# toimii muodolla ?ainesosat=kana,sipuli
+GET {{baseUrl}}/api/recipes?ainesosat=kana,sipuli
+Accept: application/json
+
+###
+# 6) Haku ainesosilla (yksi ainesosa)
+GET {{baseUrl}}/api/recipes?ainesosat=sipuli
+Accept: application/json
+
+###
+# 7) Hae yksi resepti ID:llä
+# Vaihda {id} käsin (kopioi POST-vastauksesta _id)
+GET {{baseUrl}}/api/recipes/698d7f6cc4e828100d993650
+Accept: application/json
+
+###
+# 8) Päivitä resepti (helppo malli: findById -> save)
+# Vaihda {id} käsin
+PUT {{baseUrl}}/api/recipes/698d7f6cc4e828100d993650
+Content-Type: {{contentType}}
+Accept: application/json
+
+{
+  "otsikko": "Kana-kastike (päivitetty)",
+  "kuvaus": "Nopea arkiruoka, toimii myös riisin kanssa",
+  "ainesosat": [
+    { "nimi": "Kana", "maara": "450", "yksikko": "g" },
+    { "nimi": "Sipuli", "maara": "1", "yksikko": "kpl" },
+    { "nimi": "Kerma", "maara": "2", "yksikko": "dl" },
+    { "nimi": "Curry", "maara": "1", "yksikko": "tl" }
+  ],
+  "ohjeet": "Paista kana. Lisää sipuli. Mausta currylla. Lisää kerma. Hauduta."
+}
+
+###
+# 9) Poista resepti
+# Vaihda {id} käsin
+DELETE {{baseUrl}}/api/recipes/{id}
+Accept: application/json
